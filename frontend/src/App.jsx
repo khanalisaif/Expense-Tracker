@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTheme } from "./context/ThemeContext.jsx";
-import { fetchExpenses, fetchSummary, addExpense, deleteExpense } from "./api/expenses.js";
+import { fetchExpenses, fetchSummary, addExpense, deleteExpense, updateExpense } from "./api/expenses.js";
 import AddExpenseModal from "./components/AddExpenseModal.jsx";
+import EditExpenseModal from "./components/EditExpenseModal.jsx";
 import Toast from "./components/Toast.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ExpensesList from "./pages/ExpensesList.jsx";
@@ -17,6 +18,8 @@ export default function App() {
   const [loadingExp, setLoadingExp] = useState(false);
   const [loadingSum, setLoadingSum] = useState(false);
   const [adding,     setAdding]     = useState(false);
+  const [editingExp, setEditingExp] = useState(null);
+  const [editing,    setEditing]    = useState(false);
 
   const isDark = theme === "dark";
 
@@ -78,6 +81,21 @@ export default function App() {
       await Promise.all([loadExpenses(), loadSummary()]);
     } catch {
       showToast("❌ Could not delete");
+    }
+  };
+
+  // ── Edit expense ────────────────────────────────────
+  const handleEdit = async (id, payload) => {
+    setEditing(true);
+    try {
+      await updateExpense(id, payload);
+      setEditingExp(null);
+      showToast("✅ Expense updated!");
+      await Promise.all([loadExpenses(), loadSummary()]);
+    } catch (err) {
+      showToast("❌ " + (err.response?.data?.message || "Could not update"));
+    } finally {
+      setEditing(false);
     }
   };
 
@@ -197,18 +215,30 @@ export default function App() {
               filterCat={filterCat}
               setFilterCat={setFilterCat}
               onDelete={handleDelete}
+              onEdit={(exp) => setEditingExp(exp)}
               isDark={isDark}
             />
           </div>
         </div>
       </div>
 
-      {/* ── MODAL ── */}
+      {/* ── ADD MODAL ── */}
       {showModal && (
         <AddExpenseModal
           onClose={() => setShowModal(false)}
           onAdd={handleAdd}
           loading={adding}
+          isDark={isDark}
+        />
+      )}
+
+      {/* ── EDIT MODAL ── */}
+      {editingExp && (
+        <EditExpenseModal
+          expense={editingExp}
+          onClose={() => setEditingExp(null)}
+          onSave={handleEdit}
+          loading={editing}
           isDark={isDark}
         />
       )}

@@ -5,7 +5,7 @@ const CAT_EMOJI = { Food:"🍔",Travel:"✈️",Shopping:"🛍️",Bills:"🧾",
 const CAT_COLOR = { Food:"#FF6B6B",Travel:"#4ECDC4",Shopping:"#FFE66D",Bills:"#A29BFE",Health:"#55EFC4",Other:"#FD79A8" };
 const CAT_BG    = { Food:"rgba(255,107,107,0.15)",Travel:"rgba(78,205,196,0.15)",Shopping:"rgba(255,230,109,0.15)",Bills:"rgba(162,155,254,0.15)",Health:"rgba(85,239,196,0.15)",Other:"rgba(253,121,168,0.15)" };
 
-const ExpensesList = ({ expenses, loading, filterCat, setFilterCat, onDelete, isDark }) => {
+const ExpensesList = ({ expenses, loading, filterCat, setFilterCat, onDelete, onEdit, isDark }) => {
   return (
     <div className="flex flex-col gap-4">
 
@@ -58,7 +58,7 @@ const ExpensesList = ({ expenses, loading, filterCat, setFilterCat, onDelete, is
       {!loading && expenses.length > 0 && (
         <div className="flex flex-col gap-2.5">
           {expenses.map((exp) => (
-            <ExpenseRow key={exp._id} exp={exp} onDelete={onDelete} isDark={isDark} />
+            <ExpenseRow key={exp._id} exp={exp} onDelete={onDelete} onEdit={onEdit} isDark={isDark} />
           ))}
         </div>
       )}

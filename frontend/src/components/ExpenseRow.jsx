@@ -22,7 +22,7 @@ const daysLeft = (expiresAt) => {
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 };
 
-const ExpenseRow = ({ exp, onDelete, isDark }) => {
+const ExpenseRow = ({ exp, onDelete, onEdit, isDark }) => {
   const cat = getCat(exp.category);
   const days = daysLeft(exp.expiresAt);
 
@@ -70,17 +70,33 @@ const ExpenseRow = ({ exp, onDelete, isDark }) => {
         {formatINR(exp.amount)}
       </p>
 
-      {/* Delete */}
-      <button
-        onClick={() => onDelete(exp._id)}
-        className={`ml-1 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 shrink-0 border-none cursor-pointer ${
-          isDark
-            ? "text-[#333] hover:text-[#FF6B6B] hover:bg-[rgba(255,107,107,0.1)]"
-            : "text-[#ccc] hover:text-[#FF6B6B] hover:bg-[rgba(255,107,107,0.08)]"
-        }`}
-      >
-        🗑
-      </button>
+      {/* Action buttons */}
+      <div className="flex items-center gap-1 shrink-0">
+        {/* Edit */}
+        <button
+          onClick={() => onEdit(exp)}
+          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 border-none cursor-pointer ${
+            isDark
+              ? "text-[#333] hover:text-[#4ECDC4] hover:bg-[rgba(78,205,196,0.1)]"
+              : "text-[#ccc] hover:text-[#4ECDC4] hover:bg-[rgba(78,205,196,0.08)]"
+          }`}
+          title="Edit"
+        >
+          ✏️
+        </button>
+        {/* Delete */}
+        <button
+          onClick={() => onDelete(exp._id)}
+          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 border-none cursor-pointer ${
+            isDark
+              ? "text-[#333] hover:text-[#FF6B6B] hover:bg-[rgba(255,107,107,0.1)]"
+              : "text-[#ccc] hover:text-[#FF6B6B] hover:bg-[rgba(255,107,107,0.08)]"
+          }`}
+          title="Delete"
+        >
+          🗑
+        </button>
+      </div>
     </div>
   );
 };
