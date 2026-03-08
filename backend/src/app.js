@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.use(cors({ origin: "https://expense-tracker-topaz-tau.vercel.app/", credentials: true }));
+app.use(cors({ origin: "https://expense-tracker-topaz-tau.vercel.app", credentials: true }));
 app.use(express.json());
 
 app.use("/api/expenses", expenseRoutes);
