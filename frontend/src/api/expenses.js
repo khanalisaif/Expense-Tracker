@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "/api" });
+const api = axios.create({ baseURL: "https://expense-tracker-1-vc0h.onrender.com/api" });
 
 export const fetchExpenses = (category) =>
   api.get("/expenses", { params: category && category !== "All" ? { category } : {} });
