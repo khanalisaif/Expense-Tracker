@@ -11,7 +11,18 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.use(cors({ origin: "https://expense-tracker-topaz-tau.vercel.app", credentials: true }));
+const allowedOrigins = [
+  "https://expense-tracker-topaz-tau.vercel.app",
+  "https://expensetracker.saifalikhan.in",
+  "http://localhost:5173",
+];
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) cb(null, true);
+    else cb(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use("/api/expenses", expenseRoutes);
